@@ -1,0 +1,255 @@
+﻿@page
+@model Sallon_Appointment_API.Pages.IndexModel
+@{
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>sallons</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body style="background-color: white;">
+    <div>
+        <!-- Navigation bar code -->
+        <nav style="text-align:center; font-size:30px" class="text-primary" >
+          
+           
+               
+                  
+                        <h1 style="text-align:center; font-size:30px" class="text-primary" data-toggle="modal" data-target="#addappointment">Add appointment</h1>
+                    
+             
+            
+        </nav>
+
+       
+        <div class="container">
+            <div class="row" id="allsallons">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="addappointment">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Appointment</h5>
+
+
+
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="client">Customer Name</label>
+                        <input type="text" class="form-control" id="client" aria-describedby="clientHelp" placeholder="Name">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="hairdresser">Hair Dresser</label>
+                        <input type="text" class="form-control" id="hairdresser" aria-describedby="hairdresserHelp" placeholder="hairdresser Name">
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="haircut">Haircut </label>
+                        <input type="text" class="form-control" id="haircut" aria-describedby="haircutHelp" placeholder="haircut Name">
+                    </div>
+
+                    <div class="form-group" id="result">
+
+
+                    </div>
+                    <button type="button" class="btn btn-dark" onclick="addappointment()">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="Updatesallons">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update appointment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+
+                            <input type="hidden" class="form-control" id="_id" aria-describedby="IdHelp">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="client">Customer Name</label>
+                            <input type="text" class="form-control" id="update_client" aria-describedby="clientHelp">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="hairdresser">Hair Dresser</label>
+                            <input type="text" class="form-control" id="update_hairdresser" aria-describedby="hairdresserHelp">
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="haircut">Haircut </label>
+                            <input type="text" class="form-control" id="update_haircut" aria-describedby="haircutHelp">
+                        </div>
+
+
+                        <div class="form-group" id="update_result">
+
+
+                        </div>
+                        <button type="button" class="btn btn-dark" onclick="Updatesallons()">Update </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+                                                                                                                                                                  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+                                                                                                                                                                <script src="https://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+                                                                                                                                                               <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                                                                                                                                                                   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        var uri = 'api/Sallons';
+        //Java script
+        $(document).ready(function () {
+            $.getJSON(uri)
+                .done(function (data) {
+                    $("#sallonsTemplate").tmpl(data).appendTo("#allsallons");
+                });
+        });
+        // function to get all sallons
+        function getAllsallons() {
+            $.getJSON(uri)
+                .done(function (data) {
+                    $("#allsallons").text("");
+                    $("#sallonsTemplate").tmpl(data).appendTo("#allsallons");
+                });
+        }
+        // function to add data
+        function addappointment() {
+            var _client = $('#client').val();
+            var _hairdresser = $('#hairdresser').val();
+            var _haircut = $('#haircut').val();
+
+            var sallon = {
+                client: _client,
+                hairdresser: _hairdresser,
+                haircut: _haircut
+
+            };
+            $.ajax({
+                type: "POST",
+                url: uri,
+                data: JSON.stringify(sallon),
+                contentType: "application/json; charset=utf-8"
+            }).done(function (response) {
+                $("#result").html("Success");
+                getAllsallons();
+            }).fail(function (jqXHR, textStatus) {
+                $("#result").html("An error occured ");
+            });
+        }
+        // funtion to fill the data
+        function getsallonForUpdate(id) {
+            $.ajax({
+                type: "GET",
+                url: uri + "/" + id,
+                contentType: "application/json"
+            }).done(function (response) {
+                $('#_id').val(response.sallon_ID);
+                $('#update_client').val(response.client);
+                $('#update_hairdresser').val(response.hairdresser);
+                $('#update_haircut').val(response.haircut);
+
+            });
+        }
+        // function to update
+        function Updatesallons() {
+            var _client = $('#update_client').val();
+            var _hairdresser = $('#update_hairdresser').val();
+            var _haircut = $('#update_haircut').val();
+
+            var sallonUpdate = {
+                sallon_ID: parseInt($('#_id').val()),
+                client: _client,
+                hairdresser: _hairdresser,
+                haircut: _haircut
+
+            };
+            $.ajax({
+                type: "PUT",
+                url: uri + "/" + $('#_id').val(),
+                data: JSON.stringify(sallonUpdate),
+                contentType: "application/json; charset=utf-8"
+            }).done(function (response) {
+                $("#update_result").html("Success");
+                getAllsallons();
+            }).fail(function (jqXHR, textStatus) {
+                $("#update_result").html("An error occured ");
+            });
+        }
+        //funtion to delete
+        function remove(id) {
+            var yes = confirm("Are you sure you want to delete");
+            if (yes) {
+                $.ajax({
+                    type: "DELETE",
+                    url: uri + "/" + id,
+                }).done(function (response) {
+                    getAllsallons();
+                });
+            }
+        }
+    </script>
+
+    <script id="sallonsTemplate" type="text/x-jquery-tmpl">
+        <div class="col-lg-6" style="margin:10px;">
+            @*<div class="card card text-white bg-dark border-warning mb-3" style="width: 18rem; padding:20px">*@
+
+            <ul class="list-group" style="width:100%;">
+                <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
+                    Customer Name: <b> ${client}</b>
+                    <span class="badge badge-primary badge-pill">Haircut: <b>${haircut}</b> </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
+                    Hair Dresser:<b> ${hairdresser}</b>
+
+                </li>
+
+
+
+               <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
+                    <button class="btn btn-outline-warning" onclick="getsallonForUpdate('${sallon_ID}')" data-toggle="modal" data-target="#Updatesallons">Update</button>
+                    <a href="#" class="btn btn-outline-danger" onclick="remove('${sallon_ID}')">Delete</a>
+              </li>
+            </ul>
+            </div>
+        @*</div>*@
+    </script>
+
+
+</body>
+</html>
