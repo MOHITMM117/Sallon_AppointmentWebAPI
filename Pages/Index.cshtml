@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model Sallon_Appointment_API.Pages.IndexModel
 @{
 }
@@ -17,7 +17,7 @@
            
                
                   
-                        <h1 style="text-align:center; font-size:30px" class="text-primary" data-toggle="modal" data-target="#addappointment">Add appointment</h1>
+         <h1 style="text-align:center; font-size:30px" class="text-primary" data-toggle="modal" data-target="#addappointment">Add appointment</h1>
                     
              
             
@@ -25,7 +25,7 @@
 
        
         <div class="container">
-            <div class="row" id="allsallons">
+            <div class="row" id="allsallons"> // all data show by all sallons 
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
 
 
                     </div>
-                    <button type="button" class="btn btn-dark" onclick="addappointment()">Submit</button>
+                    <button type="button" class="btn btn-dark" onclick="addappointment()">Submit</button>  // submit button 
                 </form>
             </div>
             <div class="modal-footer">
@@ -79,7 +79,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update appointment</h5>
+                    <h5 class="modal-title">Update appointment</h5>  // update models 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -109,15 +109,15 @@
                         </div>
 
 
-                        <div class="form-group" id="update_result">
+                        <div class="form-group" id="update_result">  
 
 
                         </div>
-                        <button type="button" class="btn btn-dark" onclick="Updatesallons()">Update </button>
+                        <button type="button" class="btn btn-dark" onclick="Updatesallons()">Update </button> // update details 
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  // close buitton for exit 
 
                 </div>
             </div>
@@ -145,7 +145,7 @@
             $.getJSON(uri)
                 .done(function (data) {
                     $("#allsallons").text("");
-                    $("#sallonsTemplate").tmpl(data).appendTo("#allsallons");
+                    $("#sallonsTemplate").tmpl(data).appendTo("#allsallons");  // all data
                 });
         }
         // function to add data
@@ -161,21 +161,21 @@
 
             };
             $.ajax({
-                type: "POST",
+                type: "POST", // post method
                 url: uri,
                 data: JSON.stringify(sallon),
                 contentType: "application/json; charset=utf-8"
             }).done(function (response) {
-                $("#result").html("Success");
+                $("#result").html("Success");// messagse for success
                 getAllsallons();
             }).fail(function (jqXHR, textStatus) {
-                $("#result").html("An error occured ");
+                $("#result").html("An error occured "); // message for error
             });
         }
         // funtion to fill the data
         function getsallonForUpdate(id) {
             $.ajax({
-                type: "GET",
+                type: "GET", // get method 
                 url: uri + "/" + id,
                 contentType: "application/json"
             }).done(function (response) {
@@ -200,12 +200,12 @@
 
             };
             $.ajax({
-                type: "PUT",
+                type: "PUT", // update method 
                 url: uri + "/" + $('#_id').val(),
                 data: JSON.stringify(sallonUpdate),
                 contentType: "application/json; charset=utf-8"
             }).done(function (response) {
-                $("#update_result").html("Success");
+                $("#update_result").html("Success"); // message 
                 getAllsallons();
             }).fail(function (jqXHR, textStatus) {
                 $("#update_result").html("An error occured ");
@@ -215,8 +215,8 @@
         function remove(id) {
             var yes = confirm("Are you sure you want to delete");
             if (yes) {
-                $.ajax({
-                    type: "DELETE",
+                $.ajax({ 
+                    type: "DELETE",  // delete method 
                     url: uri + "/" + id,
                 }).done(function (response) {
                     getAllsallons();
@@ -243,7 +243,7 @@
 
                <li class="list-group-item d-flex justify-content-between align-items-center text-dark">
                     <button class="btn btn-outline-warning" onclick="getsallonForUpdate('${sallon_ID}')" data-toggle="modal" data-target="#Updatesallons">Update</button>
-                    <a href="#" class="btn btn-outline-danger" onclick="remove('${sallon_ID}')">Delete</a>
+                    <a href="#" class="btn btn-outline-danger" onclick="remove('${sallon_ID}')">Delete</a> // delete button
               </li>
             </ul>
             </div>
